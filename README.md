@@ -6,6 +6,8 @@ A session-closing ritual for Claude Code. Run it when you're done working. It cl
 
 Claude Code sessions are stateless. Without an intentional wrap-up, markdown files drift out of sync, agreed-upon edits get lost, and the next session inherits the mess. Existing handoff tools save session state but ignore project hygiene. /close does both.
 
+/close is manual by design. As a UX designer, I know that closing a terminal is not closing a session. There's no signal that the work is wrapped up. /close is that signal — a deliberate ending that lets you stop thinking about the project.
+
 ## What it does
 
 ```
