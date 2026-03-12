@@ -1,6 +1,6 @@
 # /close
 
-A session-closing ritual for Claude Code. Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold.
+A session-closing ritual for Claude Code. Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
 
 ## Why
 
