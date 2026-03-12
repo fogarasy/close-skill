@@ -139,6 +139,7 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 - **Safe by default.** Only writes to markdown files. Never deletes, moves, or renames — logs those to the handoff instead.
 - **Replace, don't accumulate.** The handoff overwrites the previous one, carrying forward unresolved items. Orientation, not audit trail.
 - **Close means close.** Runs to completion without pausing for confirmation.
+- **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
 
 ## License
 
