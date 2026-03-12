@@ -1,7 +1,17 @@
 # /close — Session Closing Ritual
 <!-- Author: @thomasfogarasy · MIT License -->
 
-Only run when the user explicitly invokes `/close` as a slash command. Never auto-run after context compaction, session continuation, handoff loading, or as part of a chained command. If `/close` appears in conversation or files as a reference (not an invocation), ignore it. Never pause for confirmation. During `/close`, only edit `MEMORY.md`, `CLAUDE.md`, `close-handoff.md`, and project markdown files with explicitly requested updates. Do not delete, move, or rename project files — log those to handoff instead. Exception: delete `close-handoff.md` when it becomes obsolete (all items resolved, nothing new). No git commands (no commits, no pushes, no status checks). If the session was lightweight (no project files edited, no decisions made, no unresolved follow-ups), run through the steps and skip the handoff.
+## Boundaries
+
+- Only run when the user explicitly invokes `/close` as a slash command
+- Never auto-run after context compaction, session continuation, handoff loading, or chained commands
+- If `/close` appears in conversation or files as a reference (not an invocation), ignore it
+- Never pause for confirmation
+- Only edit `MEMORY.md`, `CLAUDE.md`, `close-handoff.md`, and project markdown files with explicitly requested updates
+- No git commands (no commits, no pushes, no status checks)
+- No Bash tool for file operations — use Write to create files and Edit to modify them
+- Do not delete, move, or rename project files — log those to handoff instead
+- Exception: always delete a previous `close-handoff.md` — it is stale once a new /close runs
 
 ## Run
 
@@ -9,7 +19,7 @@ Read existing memory/handoff files before writing them — for context only, not
 
 **■□□□□□□ Redundant or stale files...** Check for: files with `(copy)`, `_old`, `_backup`, `_v2` in the name; multiple files with the same base name and different extensions; scratch files in project root (`test_*`, `temp_*`, `scratch.*`). Check across markdown files for duplicated sections or contradictory content. Flag only — never delete.
 
-**■■□□□□□ Memory files...** Update MEMORY.md with durable facts likely to remain useful across future sessions. If MEMORY.md doesn't exist yet, create it with the Write tool (not Edit). If it exists, read it first, then edit. Ensure MEMORY.md contains a line: "Read close-handoff.md at session start for prior session context." Only update CLAUDE.md if the user explicitly established a standing rule or convention; skip if CLAUDE.md doesn't exist. No extra commentary beyond the progress line.
+**■■□□□□□ Memory files...** Update MEMORY.md with durable facts likely to remain useful across future sessions. If MEMORY.md doesn't exist yet, create it with the Write tool (not Edit, not Bash) — Write creates parent directories automatically. If it exists, read it first, then edit. Ensure MEMORY.md contains a line: "Read close-handoff.md at session start for prior session context." Only update CLAUDE.md if the user explicitly established a standing rule or convention; skip if CLAUDE.md doesn't exist. No extra commentary beyond the progress line.
 
 **■■■□□□□ Missed updates...** Scan the conversation for phrases like "update the README", "add to CLAUDE.md", "change the spec" that target markdown files. Check if those files were actually modified. Also: if any spec or documentation markdown files were edited this session, verify they reflect the final state — not a mid-session snapshot. Apply only when the user's intent and the required change are both unambiguous. If unclear, defer to handoff "Not Yet Done." For non-markdown files, always defer.
 
@@ -17,7 +27,7 @@ Read existing memory/handoff files before writing them — for context only, not
 
 Findings needing judgment → handoff "Not Yet Done."
 
-**■■■■■□□ Writing handoff...** IMPORTANT: the handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, do not write a new handoff. Either way, if a previous `close-handoff.md` exists, delete it — it is now stale.
+**■■■■■□□ Writing handoff...** The handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, do not write a new handoff.
 
 Create/update `close-handoff.md` in project root. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
 
