@@ -144,6 +144,14 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 - **Close means close.** Runs to completion without pausing for confirmation.
 - **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
 
+## Troubleshooting
+
+**`/close` not showing up as a command** — Make sure the file is at `~/.claude/commands/close.md`. Restart Claude Code after copying.
+
+**"File not found" on MEMORY.md** — Normal on first run in a new project. The skill creates it automatically.
+
+**Handoff not picked up by next session** — The skill plants a breadcrumb in MEMORY.md ("Read close-handoff.md at session start"). If MEMORY.md was deleted or the line was removed, the next session won't know to look for the handoff. Re-run `/close` to restore it.
+
 ## License
 
 MIT · [@thomasfogarasy](https://github.com/thomasfogarasy)
