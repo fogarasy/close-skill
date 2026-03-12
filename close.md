@@ -1,5 +1,5 @@
-<!-- Author: @thomasfogarasy · MIT License -->
 # /close — Session Closing Ritual
+<!-- Author: @thomasfogarasy · MIT License -->
 
 Never pause for confirmation. During `/close`, only edit `MEMORY.md`, `CLAUDE.md`, `close-handoff.md`, and project markdown files with explicitly requested updates. Do not delete, move, or rename anything — log those to handoff instead. If the session was lightweight (no project files edited, no decisions made, no unresolved follow-ups), run through the steps and skip the handoff.
 
