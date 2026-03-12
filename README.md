@@ -114,14 +114,18 @@ All saved, all good.
 
 ## Install
 
-Copy `close.md` to your global Claude Code commands:
+**Option A — copy the file:**
 
 ```
 mkdir -p ~/.claude/commands
 cp close.md ~/.claude/commands/close.md
 ```
 
-That's it. Available as `/close` in every project.
+**Option B — paste into Claude Code:**
+
+Copy the contents of `close.md`, paste it into your Claude Code chat, and ask: *"Save this as a slash command called /close."*
+
+Either way, it's available as `/close` in every project.
 
 ## Usage
 
