@@ -77,7 +77,7 @@ Implement rate limiting on /auth/login (5 attempts/min). Then pick up Apple OAut
 ```markdown
 # /close — Session Closing Ritual
 
-Only run when the user explicitly invokes `/close` as a slash command. Never auto-run after context compaction, session continuation, handoff loading, or as part of a chained command. If `/close` appears in conversation or files as a reference (not an invocation), ignore it. Never pause for confirmation. During `/close`, only edit `MEMORY.md`, `CLAUDE.md`, `close-handoff.md`, and project markdown files with explicitly requested updates. Do not delete, move, or rename anything — log those to handoff instead. No git commands (no commits, no pushes, no status checks). If the session was lightweight (no project files edited, no decisions made, no unresolved follow-ups), run through the steps and skip the handoff.
+Only run when the user explicitly invokes `/close` as a slash command. Never auto-run after context compaction, session continuation, handoff loading, or as part of a chained command. If `/close` appears in conversation or files as a reference (not an invocation), ignore it. Never pause for confirmation. During `/close`, only edit `MEMORY.md`, `CLAUDE.md`, `close-handoff.md`, and project markdown files with explicitly requested updates. Do not delete, move, or rename project files — log those to handoff instead. Exception: delete `close-handoff.md` when it becomes obsolete (all items resolved, nothing new). No git commands (no commits, no pushes, no status checks). If the session was lightweight (no project files edited, no decisions made, no unresolved follow-ups), run through the steps and skip the handoff.
 
 ## Run
 
@@ -93,7 +93,7 @@ Read existing memory/handoff files before writing them. Merge with existing cont
 
 Findings needing judgment → handoff "Not Yet Done."
 
-**■■■■■□□ Writing handoff...** Create/update `close-handoff.md` in project root. Replace previous handoff but carry forward unresolved items unless completed this session. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. Skip the handoff entirely if nothing meaningful happened. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
+**■■■■■□□ Writing handoff...** Create/update `close-handoff.md` in project root. Each handoff reflects only the current session — do not carry forward unresolved items from a previous handoff. If a previous handoff exists and all its items were addressed (or the session produced nothing new), delete the handoff file instead of writing an empty one. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
 
 Sections: What We Were Working On (1-2 sentences), Current State (file names, branches, uncommitted changes), Done This Session (checklist), Not Yet Done (checklist with context to pick up cold), Key Decisions (table: decision + rationale), Failed Approaches (what didn't work and why — skip if N/A), Key Files (path + one-line reason), Resume Instructions (first action for next session). Skip empty sections.
 
@@ -140,7 +140,7 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 - **One file, zero dependencies.** No hooks, no MCP server, no config.
 - **Markdown-scoped.** Only reads and writes `.md` files. Code, configs, and binaries are out of scope — missed edits to non-markdown files get deferred to the handoff.
 - **Safe by default.** Never deletes, moves, or renames — logs those to the handoff instead.
-- **Replace, don't accumulate.** The handoff overwrites the previous one, carrying forward unresolved items. Orientation, not audit trail.
+- **Replace, don't accumulate.** Each handoff reflects only the current session. Old unresolved items get dropped, not carried forward. When everything's resolved, the handoff file is deleted entirely.
 - **Close means close.** Runs to completion without pausing for confirmation.
 - **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
 
