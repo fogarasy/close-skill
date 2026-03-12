@@ -17,7 +17,7 @@ Read existing memory/handoff files before writing them — for context only, not
 
 Findings needing judgment → handoff "Not Yet Done."
 
-**■■■■■□□ Writing handoff...** IMPORTANT: the handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, delete `close-handoff.md` instead of writing an empty one.
+**■■■■■□□ Writing handoff...** IMPORTANT: the handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, do not write a new handoff. Either way, if a previous `close-handoff.md` exists, delete it — it is now stale.
 
 Create/update `close-handoff.md` in project root. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
 
