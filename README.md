@@ -28,6 +28,8 @@ Claude Code sessions are stateless. Without an intentional wrap-up, markdown fil
 All saved, all good.
 ```
 
+It works on markdown files — READMEs, specs, CLAUDE.md, MEMORY.md, and similar project docs. It doesn't touch code, configs, or binaries.
+
 Seven checks in ~30 seconds:
 
 1. **Stale files** — flags `_old`, `_backup`, `_v2` files, duplicates, contradictory markdown content
@@ -83,7 +85,7 @@ Read existing memory/handoff files before writing them. Merge with existing cont
 
 **■□□□□□□ Redundant or stale files...** Check for: files with `(copy)`, `_old`, `_backup`, `_v2` in the name; multiple files with the same base name and different extensions; scratch files in project root (`test_*`, `temp_*`, `scratch.*`). Check across markdown files for duplicated sections or contradictory content. Flag only — never delete.
 
-**■■□□□□□ Memory files...** Update MEMORY.md with durable facts likely to remain useful across future sessions; create it if it doesn't exist. Ensure MEMORY.md contains a line: "Read close-handoff.md at session start for prior session context." Only update CLAUDE.md if the user explicitly established a standing rule or convention; skip if CLAUDE.md doesn't exist. No extra commentary beyond the progress line.
+**■■□□□□□ Memory files...** Update MEMORY.md with durable facts likely to remain useful across future sessions. If MEMORY.md doesn't exist yet, create it with the Write tool (not Edit). If it exists, read it first, then edit. Ensure MEMORY.md contains a line: "Read close-handoff.md at session start for prior session context." Only update CLAUDE.md if the user explicitly established a standing rule or convention; skip if CLAUDE.md doesn't exist. No extra commentary beyond the progress line.
 
 **■■■□□□□ Missed updates...** Scan the conversation for phrases like "update the README", "add to CLAUDE.md", "change the spec" that target markdown files. Check if those files were actually modified. Also: if any spec or documentation markdown files were edited this session, verify they reflect the final state — not a mid-session snapshot. Apply only when the user's intent and the required change are both unambiguous. If unclear, defer to handoff "Not Yet Done." For non-markdown files, always defer.
 
@@ -136,7 +138,8 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 ## Design
 
 - **One file, zero dependencies.** No hooks, no MCP server, no config.
-- **Safe by default.** Only writes to markdown files. Never deletes, moves, or renames — logs those to the handoff instead.
+- **Markdown-scoped.** Only reads and writes `.md` files. Code, configs, and binaries are out of scope — missed edits to non-markdown files get deferred to the handoff.
+- **Safe by default.** Never deletes, moves, or renames — logs those to the handoff instead.
 - **Replace, don't accumulate.** The handoff overwrites the previous one, carrying forward unresolved items. Orientation, not audit trail.
 - **Close means close.** Runs to completion without pausing for confirmation.
 - **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
