@@ -23,6 +23,8 @@ Read existing memory/handoff files before writing them — for context only, not
 
 **■■■□□□□ Missed updates...** Scan the conversation for phrases like "update the README", "add to CLAUDE.md", "change the spec" that target markdown files. Check if those files were actually modified. Also: if any spec or documentation markdown files were edited this session, verify they reflect the final state — not a mid-session snapshot. Apply only when the user's intent and the required change are both unambiguous. If unclear, defer to handoff "Not Yet Done." For non-markdown files, always defer.
 
+Also scan for numbered lists, bullet lists, or explicitly proposed plans that were discussed but not executed — items the user approved or left open go into "Not Yet Done"; items the user rejected or superseded are omitted.
+
 **■■■■□□□ Dirty state...** Temp files, debug logs, scratch work?
 
 Findings needing judgment → handoff "Not Yet Done."
