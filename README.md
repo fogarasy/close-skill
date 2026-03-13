@@ -45,7 +45,7 @@ Seven checks, one slash command, ~30 seconds:
    Updates `MEMORY.md` with durable facts. Plants a breadcrumb so the next session picks up the handoff.
 
 3. **Missed updates**
-   Detects discussed edits never applied to specs.
+   Detects discussed edits never applied to specs, plus unapplied plans and action items.
 
 4. **Dirty state**
    Flags temp files, debug logs, scratch work.
@@ -152,6 +152,8 @@ Read existing memory/handoff files before writing them — for context only, not
 **■■□□□□□ Memory files...** Update MEMORY.md with durable facts likely to remain useful across future sessions. If MEMORY.md doesn't exist yet, create it with the Write tool (not Edit, not Bash) — Write creates parent directories automatically. If it exists, read it first, then edit. Ensure MEMORY.md contains a line: "Read close-handoff.md at session start for prior session context." Only update CLAUDE.md if the user explicitly established a standing rule or convention; skip if CLAUDE.md doesn't exist. No extra commentary beyond the progress line.
 
 **■■■□□□□ Missed updates...** Scan the conversation for phrases like "update the README", "add to CLAUDE.md", "change the spec" that target markdown files. Check if those files were actually modified. Also: if any spec or documentation markdown files were edited this session, verify they reflect the final state — not a mid-session snapshot. Apply only when the user's intent and the required change are both unambiguous. If unclear, defer to handoff "Not Yet Done." For non-markdown files, always defer.
+
+Also scan for numbered lists, bullet lists, or explicitly proposed plans that were discussed but not executed — items the user approved or left open go into "Not Yet Done"; items the user rejected or superseded are omitted.
 
 **■■■■□□□ Dirty state...** Temp files, debug logs, scratch work?
 
