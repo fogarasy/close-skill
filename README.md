@@ -1,6 +1,8 @@
 # /close
 
-A session-closing ritual for Claude Code. Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
+A tiny session-closing ritual for Claude Code. One markdown file — too small for a package, too useful to lose in a gist.
+
+Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
 
 ## Why
 
@@ -87,7 +89,7 @@ Implement rate limiting on /auth/login (5 attempts/min). Then pick up Apple OAut
 - No git commands (no commits, no pushes, no status checks)
 - No Bash tool for file operations — use Write to create files and Edit to modify them
 - Do not delete, move, or rename project files — log those to handoff instead
-- Exception: always delete a previous `close-handoff.md` — it is stale once a new /close runs
+- If a previous `close-handoff.md` exists, overwrite it — use Write to replace its contents (never use Bash to delete)
 
 ## Run
 
@@ -103,7 +105,7 @@ Read existing memory/handoff files before writing them — for context only, not
 
 Findings needing judgment → handoff "Not Yet Done."
 
-**■■■■■□□ Writing handoff...** The handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, do not write a new handoff.
+**■■■■■□□ Writing handoff...** The handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, overwrite `close-handoff.md` with: "No open items. This file will be replaced on next /close."
 
 Create/update `close-handoff.md` in project root. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
 
@@ -111,7 +113,7 @@ Sections: What We Were Working On (1-2 sentences), Current State (file names, br
 
 **■■■■■■□ Self-check...** Reread the handoff. Verify Resume Instructions matches what's actually in Not Yet Done. Fix mismatches.
 
-**■■■■■■■ Done.** If a `.gitignore` was seen during the session and `close-handoff.md` isn't in it, note it in the summary. Print summary box:
+**■■■■■■■ Done.** Print summary box:
 
 ───────────────────────────────────────
   Housekeeping  ·  {actions taken or "none"}
@@ -139,6 +141,14 @@ Copy the contents of `close.md`, paste it into your Claude Code chat, and ask: *
 
 Either way, it's available as `/close` in every project.
 
+## Permissions
+
+/close edits markdown files (MEMORY.md, close-handoff.md). Claude Code asks for permission on each edit by default. To avoid prompts, tell Claude:
+
+> Add `Edit(*.md)` and `Write(*.md)` to my global settings.
+
+This allows Claude to edit and create markdown files without asking — one-time setup, applies across all projects.
+
 ## Usage
 
 At the end of a session, type:
@@ -155,8 +165,8 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 
 - **One file, zero dependencies.** No hooks, no MCP server, no config.
 - **Markdown-scoped.** Only reads and writes `.md` files. Code, configs, and binaries are out of scope — missed edits to non-markdown files get deferred to the handoff.
-- **Safe by default.** Never deletes, moves, or renames — logs those to the handoff instead.
-- **Replace, don't accumulate.** Each handoff reflects only the current session. Old unresolved items get dropped, not carried forward. When everything's resolved, the handoff file is deleted entirely.
+- **Safe by default.** Never deletes, moves, or renames project files — logs those to the handoff instead.
+- **Replace, don't accumulate.** Each handoff reflects only the current session. Old unresolved items get dropped, not carried forward. When everything's resolved, the handoff is overwritten with a stub.
 - **Close means close.** Runs to completion without pausing for confirmation.
 - **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
 

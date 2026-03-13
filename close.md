@@ -11,7 +11,7 @@
 - No git commands (no commits, no pushes, no status checks)
 - No Bash tool for file operations — use Write to create files and Edit to modify them
 - Do not delete, move, or rename project files — log those to handoff instead
-- Exception: always delete a previous `close-handoff.md` — it is stale once a new /close runs
+- If a previous `close-handoff.md` exists, overwrite it — use Write to replace its contents (never use Bash to delete)
 
 ## Run
 
@@ -27,7 +27,7 @@ Read existing memory/handoff files before writing them — for context only, not
 
 Findings needing judgment → handoff "Not Yet Done."
 
-**■■■■■□□ Writing handoff...** The handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, do not write a new handoff.
+**■■■■■□□ Writing handoff...** The handoff covers only this session. Never copy "Not Yet Done" items from a previous handoff — those belong to the past session. If this session produced no new unresolved items, overwrite `close-handoff.md` with: "No open items. This file will be replaced on next /close."
 
 Create/update `close-handoff.md` in project root. Under 2,000 words — if over, cut in this order: Key Files (paths are greppable), Done This Session (it's in git log), Failed Approaches (summarize to one line each). Never cut Not Yet Done or Resume Instructions. If no project directory exists, output to conversation instead. If git state is known from the session (branch, uncommitted files), include it in Current State — do not run git commands to check.
 
