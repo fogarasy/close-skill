@@ -1,16 +1,18 @@
 # /close
 
-A tiny session-closing ritual for Claude Code. One markdown file — too small for a package, too useful to lose in a gist.
+A tiny session-closing ritual for [Claude Code](https://github.com/anthropics/claude-code). One markdown file — too small for a package, too useful to lose in a gist.
 
-Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
+Run it when you're done working in the Claude CLI. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
 
 ![/close in action](https://github.com/fogarasy/close-skill/releases/download/v1.0.0/Claude-Close-Skill-Workflow.gif)
 
 ## Why
 
-Claude Code sessions are stateless. Without an intentional wrap-up, markdown files drift out of sync, agreed-upon edits get lost, and the next session inherits the mess. Existing handoff tools save session state but ignore project hygiene. /close does both.
+Closing a terminal is not closing a session.
 
-/close is manual by design. As a UX designer, I know that closing a terminal is not closing a session. There's no signal that the work is wrapped up. /close is that signal — a deliberate ending that lets you stop thinking about the project.
+Claude Code sessions are stateless. Without a deliberate wrap-up, markdown files drift out of sync, agreed-upon edits get lost, and the next session inherits the mess. Existing handoff tools save session state but ignore project hygiene. /close does both — an AI agent that turns session cleanup into a repeatable LLM workflow.
+
+/close is that signal — a small UX ritual that lets you stop thinking about the project.
 
 ## What it does
 
@@ -32,19 +34,67 @@ Claude Code sessions are stateless. Without an intentional wrap-up, markdown fil
 All saved, all good.
 ```
 
-It works on markdown files — READMEs, specs, CLAUDE.md, MEMORY.md, and similar project docs. It doesn't touch code, configs, or binaries.
+It works on markdown files — READMEs, specs, CLAUDE.md, MEMORY.md, and similar project docs. It doesn't touch code, configs, or binaries. A focused agentic workflow for project hygiene.
 
 Seven checks, one slash command, ~30 seconds:
 
-1. **Stale files** — flags `_old`, `_backup`, `_v2` files, duplicates, contradictory markdown content
-2. **Memory** — updates MEMORY.md with durable facts (creates it if absent); plants a breadcrumb so the next session auto-reads the handoff; only touches CLAUDE.md for standing rules
-3. **Missed updates** — scans the conversation for edits that were discussed but never applied; verifies spec files reflect the final state, not a mid-session snapshot
-4. **Dirty state** — flags temp files, debug logs, scratch work
-5. **Handoff** — writes `close-handoff.md` with what was done, what's left, key decisions, failed approaches, and a concrete first action for next session
-6. **Self-check** — rereads the handoff to verify it's internally consistent
-7. **Summary** — prints the box above
+1. **Stale files**
+   Flags `_old`, `_backup`, `_v2` duplicates or contradictory docs.
+
+2. **Memory**
+   Updates `MEMORY.md` with durable facts. Plants a breadcrumb so the next session picks up the handoff.
+
+3. **Missed updates**
+   Detects discussed edits never applied to specs.
+
+4. **Dirty state**
+   Flags temp files, debug logs, scratch work.
+
+5. **Handoff**
+   Writes `close-handoff.md` with what's done, what's left, and how to resume.
+
+6. **Self-check**
+   Verifies the handoff is internally consistent.
+
+7. **Summary**
+   Prints the box above.
 
 Anything needing human judgment gets deferred to the handoff, not acted on.
+
+## Install
+
+**Option A — copy the file:**
+
+```
+mkdir -p ~/.claude/commands
+cp close.md ~/.claude/commands/close.md
+```
+
+**Option B — paste into Claude Code:**
+
+Copy the contents of `close.md`, paste it into your Claude Code chat, and ask: *"Save this as a slash command called /close."*
+
+Either way, it's available as `/close` in every project.
+
+## Permissions
+
+/close edits markdown files (MEMORY.md, close-handoff.md). Claude Code asks for permission on each edit by default. To avoid prompts, tell Claude:
+
+> Add `Edit(*.md)` and `Write(*.md)` to my global settings.
+
+This allows Claude to edit and create markdown files without asking — one-time setup, applies across all projects.
+
+## Usage
+
+At the end of a session, type:
+
+```
+/close
+```
+
+It writes a `close-handoff.md` in your project root. Consider adding it to `.gitignore`.
+
+If the session was lightweight (no files edited, no decisions made, no unresolved follow-ups), it skips the handoff automatically.
 
 ### Example handoff
 
@@ -128,49 +178,31 @@ All saved, all good.
 
 </details>
 
-## Install
+## Design principles
 
-**Option A — copy the file:**
+- **One file, zero dependencies**
+  No hooks, no servers, no configuration. Just developer productivity.
 
-```
-mkdir -p ~/.claude/commands
-cp close.md ~/.claude/commands/close.md
-```
+- **Markdown-scoped**
+  Only reads and writes `.md` files.
 
-**Option B — paste into Claude Code:**
+- **Safe by default**
+  Never deletes or renames files.
 
-Copy the contents of `close.md`, paste it into your Claude Code chat, and ask: *"Save this as a slash command called /close."*
+- **Replace, don't accumulate**
+  Each session writes a fresh handoff.
 
-Either way, it's available as `/close` in every project.
+- **Ritual, not automation**
+  `/close` is an intentional act that signals the work is done.
 
-## Permissions
+## Customize
 
-/close edits markdown files (MEMORY.md, close-handoff.md). Claude Code asks for permission on each edit by default. To avoid prompts, tell Claude:
+It's one markdown file — fork it and make it yours. You can modify:
 
-> Add `Edit(*.md)` and `Write(*.md)` to my global settings.
-
-This allows Claude to edit and create markdown files without asking — one-time setup, applies across all projects.
-
-## Usage
-
-At the end of a session, type:
-
-```
-/close
-```
-
-It writes a `close-handoff.md` in your project root. Consider adding it to `.gitignore`.
-
-If the session was lightweight (no files edited, no decisions made, no unresolved follow-ups), it skips the handoff automatically.
-
-## Design
-
-- **One file, zero dependencies.** No hooks, no MCP server, no config.
-- **Markdown-scoped.** Only reads and writes `.md` files. Code, configs, and binaries are out of scope — missed edits to non-markdown files get deferred to the handoff.
-- **Safe by default.** Never deletes, moves, or renames project files — logs those to the handoff instead.
-- **Replace, don't accumulate.** Each handoff reflects only the current session. Old unresolved items get dropped, not carried forward. When everything's resolved, the handoff is overwritten with a stub.
-- **Close means close.** Runs to completion without pausing for confirmation.
-- **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional workflow that signals the work is wrapped up — for the next session and for your own head.
+- Which files get scanned and updated (e.g. add `CHANGELOG.md`, drop `CLAUDE.md`)
+- Handoff format and sections (add your own, remove what you don't use)
+- What counts as dirty state (e.g. flag `.env.local`, ignore `node_modules`)
+- Progress steps (add a linting check, remove the self-check)
 
 ## Troubleshooting
 
@@ -184,4 +216,4 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 
 MIT · [@thomasfogarasy](https://github.com/thomasfogarasy)
 
-Built for the Claude Code slash command ecosystem.
+Built for the Claude Code slash command ecosystem. A small step toward AI productivity that compounds over sessions.
