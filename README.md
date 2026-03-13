@@ -34,7 +34,7 @@ All saved, all good.
 
 It works on markdown files — READMEs, specs, CLAUDE.md, MEMORY.md, and similar project docs. It doesn't touch code, configs, or binaries.
 
-Seven checks in ~30 seconds:
+Seven checks, one slash command, ~30 seconds:
 
 1. **Stale files** — flags `_old`, `_backup`, `_v2` files, duplicates, contradictory markdown content
 2. **Memory** — updates MEMORY.md with durable facts (creates it if absent); plants a breadcrumb so the next session auto-reads the handoff; only touches CLAUDE.md for standing rules
@@ -170,7 +170,7 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 - **Safe by default.** Never deletes, moves, or renames project files — logs those to the handoff instead.
 - **Replace, don't accumulate.** Each handoff reflects only the current session. Old unresolved items get dropped, not carried forward. When everything's resolved, the handoff is overwritten with a stub.
 - **Close means close.** Runs to completion without pausing for confirmation.
-- **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional act that signals the work is wrapped up — for the next session and for your own head.
+- **Ritual, not automation.** Closing a terminal is not closing a session. /close is an intentional workflow that signals the work is wrapped up — for the next session and for your own head.
 
 ## Troubleshooting
 
@@ -183,3 +183,5 @@ If the session was lightweight (no files edited, no decisions made, no unresolve
 ## License
 
 MIT · [@thomasfogarasy](https://github.com/thomasfogarasy)
+
+Built for the Claude Code slash command ecosystem.
