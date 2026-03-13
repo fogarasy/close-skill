@@ -4,7 +4,7 @@ A tiny session-closing ritual for Claude Code. One markdown file — too small f
 
 Run it when you're done working. It cleans up your project's markdown files, catches missed updates, and writes a handoff so the next session can pick up cold. It never touches your code, configs, or binaries.
 
-![/close in action](https://github.com/fogarasy/close-skill/releases/download/v1.0.0/Close-skill-video.gif)
+![/close in action](https://github.com/fogarasy/close-skill/releases/download/v1.0.0/Claude-Close-Skill-Workflow.gif)
 
 ## Why
 
