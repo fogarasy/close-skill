@@ -35,7 +35,7 @@ Sections: What We Were Working On (1-2 sentences), Current State (file names, br
 
 **■■■■■■□ Self-check...** Reread the handoff. Verify Resume Instructions matches what's actually in Not Yet Done. Fix mismatches.
 
-**■■■■■■■ Done.** If a `.gitignore` was seen during the session and `close-handoff.md` isn't in it, note it in the summary. Print summary box:
+**■■■■■■■ Done.** Print summary box:
 
 ```
 ───────────────────────────────────────
